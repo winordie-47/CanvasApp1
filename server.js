@@ -9,7 +9,9 @@ mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost/canvas_dev');
 
 app.use(bodyparser.json());
 
-app.set(process.env.PORT || 3000);
+require('./routes/index.js')(app);
+
+app.set('port', process.env.PORT || 3000);
 app.listen(app.get('port'), function() {
   console.log('server running on port: ' + app.get('port'));
 });
