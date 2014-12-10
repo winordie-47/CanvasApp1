@@ -7,18 +7,19 @@ var bodyparser = require('body-parser');
 var passport = require('passport');
 
 mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost/canvas_dev');
+app.use(bodyparser.json());
 
 app.set('jwtSecret', process.env.JWT_SECRET || 'changethisordie');
 
-app.use(bodyparser.json());
 app.use(passport.initialize());
 
-require('./routes/index.js')(app);
+require('./lib/passport')(passport);
 var jwtauth = require('./lib/jwt_auth')(app.get('jwtSecret'));
 
 var canvasRouter = express.Router();
 canvasRouter.use(jwtauth);
 
+require('./routes/index.js')(app);
 require('./routes/users_routes.js')(app, passport);
 
 app.set('port', process.env.PORT || 3000);
