@@ -19,7 +19,7 @@ var jwtauth = require('./lib/jwt_auth')(app.get('jwtSecret'));
 var canvasRouter = express.Router();
 canvasRouter.use(jwtauth);
 
-require('./routes/user_routes.js')(app, passport);
+require('./routes/users_routes.js')(app, passport);
 
 app.set('port', process.env.PORT || 3000);
 app.listen(app.get('port'), function() {
