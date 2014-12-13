@@ -9,7 +9,7 @@ var expires = moment().add(7, 'days').valueOf();
 console.log(expires);
 
 var userSchema = mongoose.Schema({
-  basic:{
+  basic: {
     username: String,
     password: String,
     teacher: false,

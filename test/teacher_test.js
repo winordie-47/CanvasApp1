@@ -15,16 +15,16 @@ User.collection.remove(function(err) {
   if (err) throw(err);
 });
 
-describe('the teacher test', function(){
+describe('the teacher test', function() {
   var jwtToken;
   //var id;
 
   //creates a user
-  before(function(done){
+  before(function(done) {
     chai.request(localhost)
     .post('/api/users')
-    .send({username:'test@example.com',password:'foobar123'})
-    .end(function(err,res){
+    .send({username:'test@example.com', password:'foobar123'})
+    .end(function(err, res) {
       jwtToken = res.body.jwt;
       done();
     });
@@ -34,8 +34,8 @@ describe('the teacher test', function(){
     chai.request(localhost)
     .get('/api/users')
     .set({jwt: jwtToken})
-    .send({'basic':{'teacher':true}})
-    .end(function(err,res) {
+    .send({basic:{teacher:true}})
+    .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body.msg).to.equal('added teacher');
       done();
@@ -46,8 +46,8 @@ describe('the teacher test', function(){
     chai.request(localhost)
     .get('/api/users')
     .set({jwt: jwtToken})
-    .send({'basic':{'teacher':true}})
-    .end(function(err,res){
+    .send({basic:{teacher:true}})
+    .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body.msg).to.equal('removed teacher');
       done();

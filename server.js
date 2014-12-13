@@ -20,8 +20,8 @@ var canvasRouter = express.Router();
 canvasRouter.use(jwtauth);
 
 require('./routes/index.js')(app);
-require('./routes/users_routes.js')(app, jwtauth);
-require('./routes/confirmed_user_route.js')(app, jwtauth);
+require('./routes/users_routes.js')(app, passport);
+//require('./routes/confirmed_user_route.js')(app, passport);
 
 app.set('port', process.env.PORT || 3000);
 app.listen(app.get('port'), function() {

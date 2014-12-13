@@ -4,5 +4,4 @@
   "validateQuoteMarks": true,
   "disallowMultipleVarDecl": true,
   "requireCamelCaseOrUpperCaseIdentifiers": "ignoreProperties"
-  
 }

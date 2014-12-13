@@ -14,13 +14,13 @@ User.collection.remove(function(err) {
   if (err) throw(err);
 });
 
-describe('test the api', function(){
+describe('test the api', function() {
   var jwtToken;
 
   it('should get a basic route', function(done) {
     chai.request(localhost)
       .get('/')
-      .end(function(err,res){
+      .end(function(err, res) {
         expect(err).to.eql(null);
         expect(res.body).to.equal(String);
         done();
@@ -30,8 +30,8 @@ describe('test the api', function(){
   it('should create a user', function(done) {
     chai.request(localhost)
     .post('/api/users')
-    .send({username:'test@example.com',password:'foobar123'})
-    .end(function(err,res){
+    .send({username:'test@example.com', password:'foobar123'})
+    .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body).to.have.property('jwt');
       jwtToken = res.body.jwt;
@@ -44,7 +44,7 @@ describe('test the api', function(){
     .get('/api/users')
     .set({jwt: jwtToken})
     .auth({username: 'test@example.com', password:'foobar123'})
-    .end(function(err,res) {
+    .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body).to.have.property('jwt');
       done();

@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(grunt){
+module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-jscs');
   grunt.loadNpmTasks('grunt-simple-mocha');
@@ -10,7 +10,7 @@ module.exports = function(grunt){
       options: {
         jshintrc: true
       },
-      src: ['models/**/*.js', 'routes/**/*.js', 'test/**/*.js', 'server.js', 'Gruntfile.js' ]
+      src: ['models/**/*.js', 'routes/**/*.js', 'test/**/*.js', 'server.js', 'Gruntfile.js']
     },
 
     jscs: {
@@ -24,6 +24,6 @@ module.exports = function(grunt){
       src: ['test/api_test.js']
     }
   });
-  grunt.registerTask('test', ['jshint','jscs', 'simplemocha']);
-  grunt.registerTask('default',['test']);
+  grunt.registerTask('test', ['jshint', 'jscs', 'simplemocha']);
+  grunt.registerTask('default', ['test']);
 };
