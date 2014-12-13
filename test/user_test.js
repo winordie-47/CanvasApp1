@@ -53,13 +53,13 @@ describe('test the api', function() {
 
   it('should get a user', function(done) {
     chai.request(localhost)
-    .get('/api/users')
-    .set({jwt: jwtToken})
-    .auth('test@example.com', 'foobar123')
+    .get('/api/user')
+    //.set({jwt: jwtToken})
+    //.auth('test@example.com', 'foobar123')
     .end(function(err, res) {
       expect(err).to.eql(null);
       console.log(res.body);
-      expect(res.body).to.have.property('jwt');
+      expect(res.body).to.have.property('_id');
       done();
     });
   });

@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(app, jwtauth) {
+module.exports = function(app) {
   var User = require('../models/user_model.js');
 
   //get everyone
@@ -13,15 +13,15 @@ module.exports = function(app, jwtauth) {
   });
 
   //get one person by jwt
-  app.get('/api/user', jwtauth, function(req, res) {
-    User.findById(req.params.user_id, function(err, user) {
+  app.get('/api/user', function(req, res) {
+    User.findOne({email: req.body.email}, function(err, user) {
       if (err) return res.status(500).send('error');
       res.json(user);
     });
   });
 
   //change information
-  app.put('/api/users/:_id', jwtauth, function(req, res) {
+  app.put('/api/users/:_id', function(req, res) {
     User.findById(req.params.user_id, function(err, user) {
       if (err) return res.status(500).send('error');
       user.name = req.body.name;
@@ -38,7 +38,7 @@ module.exports = function(app, jwtauth) {
   });
 
   //delete information
-  app.delete('/api/users/:_id', jwtauth, function(req, res) {
+  app.delete('/api/users/:_id', function(req, res) {
     User.remove({
       _id: req.params.user_id
     }, function(err) {
