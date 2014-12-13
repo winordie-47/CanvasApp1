@@ -10,7 +10,7 @@ console.log(expires);
 
 var userSchema = mongoose.Schema({
   basic: {
-    username: String,
+    email: String,
     password: String,
     teacher: false,
     admin: false,

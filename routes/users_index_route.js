@@ -4,8 +4,9 @@ module.exports = function(app, jwtauth) {
   var User = require('../models/user_model.js');
 
   //get everyone
-  app.get('/api/users', jwtauth, function(req, res) {
+  app.get('/api/allusers', function(req, res) {
     User.find(function(err, data) {
+      console.log('getting all of the users');
       if (err) return res.status(500).send('error');
       res.json(data);
     });
