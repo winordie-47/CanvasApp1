@@ -44,6 +44,7 @@ describe('test the api', function() {
   it('should get all of the users', function(done) {
     chai.request(localhost)
     .get('/api/allusers')
+    .set({jwt: jwtToken})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(Array.isArray(res.body)).to.eql(true);
@@ -54,12 +55,23 @@ describe('test the api', function() {
   it('should get a user', function(done) {
     chai.request(localhost)
     .get('/api/user')
-    //.set({jwt: jwtToken})
-    //.auth('test@example.com', 'foobar123')
+    .set({jwt: jwtToken})
     .end(function(err, res) {
       expect(err).to.eql(null);
       console.log(res.body);
       expect(res.body).to.have.property('_id');
+      done();
+    });
+  });
+
+  it('should update user info', function(done) {
+    chai.request(localhost)
+    .put('/api/userinfo')
+    .set({jwt: jwtToken})
+    .send({userinfo:{name:'joe', phone:'555-444-3333'}})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res.body.msg).to.equal('user updated');
       done();
     });
   });
