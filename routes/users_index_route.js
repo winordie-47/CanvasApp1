@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(app) {
+module.exports = function(app, jwtauth) {
   var User = require('../models/user_model.js');
 
   //get everyone
@@ -13,7 +13,7 @@ module.exports = function(app) {
   });
 
   //get one person by jwt
-  app.get('/api/user', function(req, res) {
+  app.get('/api/user', jwtauth, function(req, res) {
     User.findOne({email: req.body.email}, function(err, user) {
       if (err) return res.status(500).send('error');
       res.json(user);
