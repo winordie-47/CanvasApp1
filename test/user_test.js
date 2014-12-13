@@ -41,6 +41,16 @@ describe('test the api', function() {
     });
   });
 
+  it('should get all of the users', function(done) {
+    chai.request(localhost)
+    .get('/api/allusers')
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(Array.isArray(res.body)).to.eql(true);
+      done();
+    });
+  });
+
   it('should get a user', function(done) {
     chai.request(localhost)
     .get('/api/users')

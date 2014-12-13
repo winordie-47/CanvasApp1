@@ -13,7 +13,7 @@ module.exports = function(app, jwtauth) {
   });
 
   //get one person by jwt
-  app.get('/api/users/', jwtauth, function(req, res) {
+  app.get('/api/user', jwtauth, function(req, res) {
     User.findById(req.params.user_id, function(err, user) {
       if (err) return res.status(500).send('error');
       res.json(user);
