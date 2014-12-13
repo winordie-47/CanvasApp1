@@ -10,8 +10,14 @@ require('./server.js');
 var expect = chai.expect;
 var localhost = 'http://localhost:3000';
 
+User.collection.remove(function(err) {
+  if (err) throw(err);
+});
+
 describe('test the api', function(){
   var jwtToken;
+
+  before(function)
 
   it('should get a basic route', function(done) {
     chai.request(localhost)
@@ -29,6 +35,7 @@ describe('test the api', function(){
     .end(function(err,res){
       expect(err).to.eql(null);
       expect(res.body).to.have.property('jwt');
+      jwtToken = res.body.jwt;
       done();
     });
   });
@@ -36,31 +43,11 @@ describe('test the api', function(){
   it('should get a user', function(done) {
     chai.request(localhost)
     .get('/api/users')
-    .send({jwt:jwtToken});
+    .set({jwt: jwtAuth})
+    .auth({"test@example.com", "password":"foobar123"});
     .end(function(err,res) {
       expect(err).to.eql(null);
-      expect(res.body).to.have.property('id');
-    });
-  });
-
-  it('should be able to create a teacher', function(done) {
-    chai.request(localhost)
-    .get('/api/users')
-    .send({"basic":{"teacher":true}});
-    .end(function(err,res) {
-      expect(err).to.eql(null);
-      expect(res.body.msg).to.equal('added teacher');
-      done();
-    });
-  });
-
-  it('should be able to remove a teacher', function(done) {
-    chai.request(localhost);
-    .get('/api/users')
-    .send({"basic":{"teacher":true}});
-    .end(function(err,res){
-      expect(err).to.eql(null);
-      expect(res.body.msg).to.equal('removed teacher');
+      expect(res.body).to.have.property('jwt');
       done();
     });
   });
