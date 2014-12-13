@@ -32,9 +32,9 @@ userSchema.methods.validPassword = function(password) {
 };
 
 userSchema.methods.generateToken = function(secret) {
-  var self = this;
+  var _this = this;
   var token = jwt.encode({
-    iss: self._id,
+    iss: _this._id,
     exp: expires
   }, secret);
   return token;

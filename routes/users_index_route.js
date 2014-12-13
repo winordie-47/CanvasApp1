@@ -1,23 +1,26 @@
 'use strict';
 
-module.exports = function(app, passport) {
+module.exports = function(app, jwtauth) {
   var User = require('../models/user_model.js');
 
-  app.get('/api/users', passport, function(req, res) {
+  //get everyone
+  app.get('/api/users', jwtauth, function(req, res) {
     User.find(function(err, data) {
       if (err) return res.status(500).send('error');
       res.json(data);
     });
   });
 
-  app.get('/api/users/:_id', passport, function(req, res) {
+  //get one person by jwt
+  app.get('/api/users/:_id', jwtauth, function(req, res) {
     User.findById(req.params.user_id, function(err, user) {
       if (err) return res.status(500).send('error');
       res.json(user);
     });
   });
 
-  app.put('/api/users/:_id', passport, function(req, res) {
+  //change information
+  app.put('/api/users/:_id', jwtauth, function(req, res) {
     User.findById(req.params.user_id, function(err, user) {
       if (err) return res.status(500).send('error');
       user.name = req.body.name;
@@ -33,7 +36,8 @@ module.exports = function(app, passport) {
     });
   });
 
-  app.delete('/api/users/:_id', passport, function(req, res) {
+  //delete information
+  app.delete('/api/users/:_id', jwtauth, function(req, res) {
     User.remove({
       _id: req.params.user_id
     }, function(err) {
