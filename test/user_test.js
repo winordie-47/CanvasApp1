@@ -1,11 +1,12 @@
 'use strict';
 
+process.env.MONGO_URL = 'mongodb://localhost/users_test';
 var chai = require('chai');
 var chaihttp = require('chai-http');
-var User = require('./models/user_model.js');
+var User = require('../models/user_model.js');
 chai.use(chaihttp);
 
-require('./server.js');
+require('../server.js');
 
 var expect = chai.expect;
 var localhost = 'http://localhost:3000';
@@ -22,7 +23,7 @@ describe('test the api', function() {
       .get('/')
       .end(function(err, res) {
         expect(err).to.eql(null);
-        expect(res.body).to.equal(String);
+        expect(res.body).to.equal('hello world');
         done();
       });
   });
@@ -35,18 +36,42 @@ describe('test the api', function() {
       expect(err).to.eql(null);
       expect(res.body).to.have.property('jwt');
       jwtToken = res.body.jwt;
+      console.log(jwtToken);
+      done();
+    });
+  });
+
+  it('should get all of the users', function(done) {
+    chai.request(localhost)
+    .get('/api/allusers')
+    .set({jwt: jwtToken})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(Array.isArray(res.body)).to.eql(true);
       done();
     });
   });
 
   it('should get a user', function(done) {
     chai.request(localhost)
-    .get('/api/users')
+    .get('/api/user')
     .set({jwt: jwtToken})
-    .auth({username: 'test@example.com', password:'foobar123'})
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res.body).to.have.property('jwt');
+      console.log(res.body);
+      expect(res.body).to.have.property('_id');
+      done();
+    });
+  });
+
+  it('should update user info', function(done) {
+    chai.request(localhost)
+    .put('/api/userinfo')
+    .set({jwt: jwtToken})
+    .send({userinfo:{name:'joe', phone:'555-444-3333'}})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res.body.msg).to.equal('user updated');
       done();
     });
   });
