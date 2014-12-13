@@ -22,7 +22,7 @@ describe('test the api', function() {
       .get('/')
       .end(function(err, res) {
         expect(err).to.eql(null);
-        expect(res.body).to.equal(String);
+        expect(res.body).to.equal('hello world');
         done();
       });
   });
@@ -44,9 +44,10 @@ describe('test the api', function() {
     chai.request(localhost)
     .get('/api/users')
     .set({jwt: jwtToken})
-    .auth({username: 'test@example.com', password:'foobar123'})
+    .auth('test@example.com', 'foobar123')
     .end(function(err, res) {
       expect(err).to.eql(null);
+      console.log(res.body);
       expect(res.body).to.have.property('jwt');
       done();
     });
