@@ -16,14 +16,19 @@
     "url": "https://github.com/CanvasApp/CanvasApp/issues"
   },
   "homepage": "https://github.com/CanvasApp/CanvasApp",
+
   "dependencies": {
     "body-parser": "^1.10.0",
     "express": "^4.10.4",
     "moment": "^2.8.4",
-    "mongoose": "^3.8.20"
-  },
-  "devDependencies": {
+    "mongoose": "^3.8.20",
     "bcrypt-nodejs": "0.0.3",
+    "jwt-simple": "^0.2.0",
+    "passport": "^0.2.1",
+    "passport-http": "^0.2.2"
+  },
+
+  "devDependencies": {
     "chai": "^1.10.0",
     "chai-http": "^1.0.0",
     "debowerify": "^1.1.1",
@@ -37,10 +42,8 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-jscs": "^1.0.0",
     "grunt-karma": "^0.9.0",
+    "grunt-sass": "^0.17.0",
     "grunt-simple-mocha": "^0.4.0",
-    "jwt-simple": "^0.2.0",
-    "karma": "^0.12.28",
-    "passport": "^0.2.1",
-    "passport-http": "^0.2.2"
+    "karma": "^0.12.28"
   }
 }

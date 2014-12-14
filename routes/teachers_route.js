@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function(app, jwtauth) {
-  var User = require('../models/user_model.js');
+  var User = require('../models/user_model');
 
   //confirm teacher
   app.post('/api/confirmteacher', jwtauth, function(req, res) {
