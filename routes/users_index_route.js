@@ -28,8 +28,9 @@ module.exports = function(app, jwtauth) {
       console.log(user);
       user.userinfo = {name: req.body.userinfo.name, phone: req.body.userinfo.phone};
       console.log(user.userinfo);
-      user.save(function(err) {
+      user.save(function(err, data) {
         if (err) return res.status(500).send('error');
+        console.log(data);
         res.json({msg:'user updated'});
       });
     });

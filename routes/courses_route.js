@@ -1,78 +1,105 @@
 'use strict';
 
 module.exports = function(app, jwtauth) {
-  var Courses = require('../models/courses_model');
+  var Course = require('../models/courses_model');
   var User = require('../models/user_model');
 
   //creates a course
   app.post('/api/courses', jwtauth, function(req, res) {
-    var courses = new Courses();
-    var user = new User();
-    User.findOne({_id: req.user._id}, function(err, data) {
+    User.findOne({_id: req.user._id}, function(err, user) {
       if (err) return res.status(500).send('error');
-      if (user.teacher.confirmed === true);
-      courses = {
-        name: req.body.name,
-        description: req.body.description,
-        schedule: req.body.schedule
-      };
-      console.log(data);
-      console.log(courses);
-      courses.save(function(err, data) {
-        if (err) return res.status(500).send('error');
-        console.log(data);
-        res.json(data);
-      });
+      if (user.teacher.confirmed === true) {
+        var course = new Course({
+          name: req.body.name,
+          summary: req.body.summary,
+          schedule: req.body.schedule,
+          description: req.body.description,
+          prereq: [],
+          pass: {confirmed: false}
+        });
+        console.log(user.teacher.confirmed);
+        course.save(function(err, data) {
+          if (err) return res.status(500).send('error');
+          console.log(data);
+          res.json(data);
+        });
+      } else {
+        res.json({msg: 'not a teacher'});
+      }
     });
   });
 
   //gets all of the courses
   app.get('/api/courses', jwtauth, function(req, res) {
-    Courses.find(function(err, data) {
-      console.log('getting all of the courses');
+    User.findOne({_id: req.user._id}, function(err, user) {
       if (err) return res.status(500).send('error');
-      res.json(data);
+      if (user.teacher.confirmed === true) {
+        Course.find(function(err, data) {
+          console.log('getting all of the courses');
+          if (err) return res.status(500).send('error');
+          res.json(data);
+        });
+      } else {
+        res.json({msg: 'not a teacher'});
+      }
     });
   });
 
   //gets just one course
   app.get('/api/course', jwtauth, function(req, res) {
-    Courses.findOne({_id: req.courses.courses_id}, function(err, data) {
-      console.log('coursing it up');
-      if (err) return res.status(500).send('error');
-      res.json(data);
+    User.findOne({_id: req.user._id}, function(err, user) {
+      if (err) res.status(500).send('error');
+      if (user.teacher.confirmed === true) {
+        Course.findOne({_id: req.course._id}, function(err, data) {
+          console.log('coursing it up');
+          if (err) return res.status(500).send('error');
+          res.json(data);
+        });
+      } else {
+        res.json({msg: 'not a teacher'});
+      }
     });
   });
 
   //changes class info
   app.put('/api/courses', jwtauth, function(req, res) {
-    Courses.findOne({_id: req.courses._id}, function(err, courseinfo) {
-      if (err) return res.status(500).send('error');
-      courseinfo = {
-        name: req.body.name,
-        description: req.body.description,
-        schedule: req.body.schedule
-      };
-      courseinfo.summary = function() {
-        var newstr = '';
-        for (var i = 0; i < 9; i++) {
-          newstr += req.body.description[i].length;
-        }
-        return newstr;
-      };
-      console.log(courseinfo);
-      courseinfo.save(function(err, data) {
-        if (err) return res.status(500).send('error');
-        res.json(data);
-      });
+    User.findOne({_id: req.user._id}, function(err, user) {
+      if (err) res.status(500).send('error');
+      if (user.teacher.confirmed === true) {
+        Course.findOne({_id: req.course._id}, function(err, course) {
+          if (err) return res.status(500).send('error');
+          course = {
+            name: req.body.name,
+            summary: req.body.summary,
+            schedule: req.body.schedule,
+            description: req.body.description,
+            prereq: [],
+            pass: {confirmed: false}
+          };
+          course.save(function(err, data) {
+          if (err) return res.status(500).send('error');
+          console.log(data);
+          res.json({msg: 'course updated'});
+        });
+        });
+      } else {
+        res.json({msg: 'not a teacher'});
+      }
     });
   });
 
   //deletes a course
-  app.delete('/api/courses', jwtauth, function(req, res) {
-    Courses.remove({_id: req.body.courses_id}, function(err) {
-      if (err) return res.status(500).send('error');
-      res.json({ msg: 'course removed'});
+  app.delete('/api/course', jwtauth, function(req, res) {
+    User.findOne({_id: req.user._id}, function(err, user) {
+      if (err) res.status(500).send('error');
+      if (user.teacher.confirmed === true) {
+        Course.remove({_id: req.course._id}, function(err) {
+          if (err) return res.status(500).send('error');
+          res.json({ msg: 'course removed'});
+        });
+      } else {
+        res.json({msg: 'not a teacher'});
+      }
     });
   });
 };

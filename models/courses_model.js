@@ -2,13 +2,13 @@
 
 var mongoose = require('mongoose');
 
-var coursesSchema = mongoose.Schema({
+var courseSchema = mongoose.Schema({
   name: String,
   summary: String,
   schedule: String,
-  description: [],
+  description: String,
   prereq: [],
   pass: {confirmed: false}
 });
 
-module.exports = mongoose.model('Courses', coursesSchema);
+module.exports = mongoose.model('Course', courseSchema);
