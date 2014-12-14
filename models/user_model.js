@@ -13,14 +13,14 @@ var userSchema = mongoose.Schema({
     email: String,
     password: String
   },
-    teacher: {confirmed: false},
-    admin: {confirmed: false},
-    userclass: [],
-    usermessages: [],
-    userinfo: {
-      name: String,
-      phone: String
-    }
+  teacher: {confirmed: false},
+  admin: {confirmed: false},
+  userclass: [],
+  usermessages: [],
+  userinfo: {
+    name: String,
+    phone: String
+  }
 });
 
 userSchema.methods.generateHash = function(password) {

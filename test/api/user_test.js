@@ -3,10 +3,10 @@
 process.env.MONGO_URL = 'mongodb://localhost/users_test';
 var chai = require('chai');
 var chaihttp = require('chai-http');
-var User = require('../models/user_model.js');
+var User = require('../../models/user_model.js');
 chai.use(chaihttp);
 
-require('../server.js');
+require('../../server.js');
 
 var expect = chai.expect;
 var localhost = 'http://localhost:3000';
