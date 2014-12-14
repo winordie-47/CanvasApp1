@@ -1,31 +1,27 @@
 'use strict';
 
 module.exports = function(app, jwtauth) {
-  var Courses = require('../models/courses_model.js');
+  var Courses = require('../models/courses_model');
+  var User = require('../models/user_model');
 
   //creates a course
   app.post('/api/courses', jwtauth, function(req, res) {
     var courses = new Courses();
-    Courses.findOne({_id: req.user._id}, function(err, data) {
+    var user = new User();
+    User.findOne({_id: req.user._id}, function(err, data) {
       if (err) return res.status(500).send('error');
+      if (user.teacher.confirmed === true);
       courses = {
         name: req.body.name,
         description: req.body.description,
         schedule: req.body.schedule
-      };
-      courses.summary = function() {
-        var newstr = '';
-        for (var i = 0; i < 9; i++) {
-          newstr += req.body.description[i].length;
-        }
-        return newstr;
       };
       console.log(data);
       console.log(courses);
       courses.save(function(err, data) {
         if (err) return res.status(500).send('error');
         console.log(data);
-        res.json({msg: 'course created'});
+        res.json(data);
       });
     });
   });

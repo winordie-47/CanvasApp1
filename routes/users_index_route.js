@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function(app, jwtauth) {
-  var User = require('../models/user_model.js');
+  var User = require('../models/user_model');
 
   //get everyone
   app.get('/api/allusers', jwtauth, function(req, res) {

@@ -6,9 +6,9 @@ var coursesSchema = mongoose.Schema({
   name: String,
   summary: String,
   schedule: String,
-  description: String,
+  description: [],
   prereq: [],
   pass: {confirmed: false}
 });
 
-module.exports = mongoose.model('courses', coursesSchema);
+module.exports = mongoose.model('Courses', coursesSchema);
