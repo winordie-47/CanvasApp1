@@ -27,7 +27,12 @@ module.exports = function(grunt) {
     },
 
     simplemocha: {
-      src: ['test/api/**/*.js']
+      options: {
+        timeout: 3000,
+        ignoreLeaks: true,
+        reporter: 'tap'
+      },
+      src: ['test/api/user_test.js', 'test/api/teacher_test.js', 'test/api/classes_test.js']
     },
 
     clean: {

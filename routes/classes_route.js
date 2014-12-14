@@ -1,10 +1,10 @@
 'use strict';
 
-module.exports = function(app, jwtauth){
+module.exports = function(app, jwtauth) {
   var Classes = require('./models/classes_model.js');
 
   //creates a class
-  app.post('/api/classes', jwtauth, function(res, res) {
+  app.post('/api/classes', jwtauth, function(req, res) {
     var classes = new Classes();
     classes = {
       name: req.body.name,
@@ -12,15 +12,16 @@ module.exports = function(app, jwtauth){
       schedule: req.body.schedule
     };
     classes.summary = function() {
-      var newstr = "";
-      for(var i = 0; i < 9; i++) {
+      var newstr = '';
+      for (var i = 0; i < 9; i++) {
         newstr += req.body.description[i].length;
       }
       return newstr;
     };
     console.log(classes);
     classes.save(function(err, data) {
-      if (err) return res.status(500).send(error);
+      if (err) return res.status(500).send('error');
+      console.log(data);
       res.json({msg: 'class created'});
     });
   });
@@ -36,7 +37,9 @@ module.exports = function(app, jwtauth){
 
   //gets just one class
   app.get('/api/class', jwtauth, function(req, res) {
-    Classes.findOne({_id: req.body.classes_id}, function(req, res) {
+    Classes.findOne({
+      _id: req.body.classes_id
+    }, function(err, data) {
       console.log('classing it up');
       if (err) return res.status(500).send('error');
       res.json(data);
@@ -45,25 +48,37 @@ module.exports = function(app, jwtauth){
 
   //changes class info
   app.put('/api/classes', jwtauth, function(req, res) {
-    Classes.findOne({_id: req.body.classes_id}, function(err, classinfo) {
+    Classes.findOne({
+      _id: req.body.classes_id
+    }, function(err, classinfo) {
       if (err) return res.status(500).send('error');
       classinfo = {
         name: req.body.name,
         description: req.body.description,
         schedule: req.body.schedule
-        }
-      classes.summary = function() {
-        var newstr = "";
-        for(var i = 0; i < 9; i++) {
+      };
+      classinfo.summary = function() {
+        var newstr = '';
+        for (var i = 0; i < 9; i++) {
           newstr += req.body.description[i].length;
         }
         return newstr;
       };
+      console.log(classinfo);
+      classinfo.save(function(err, data) {
+        if (err) return res.status(500).send('error');
+        res.json(data);
+      });
     });
   });
 
   //deletes a class
   app.delete('/api/classes', jwtauth, function(req, res) {
-
+    Classes.remove({
+      _id: req.body.classes_id
+    }, function(err) {
+      if (err) return res.status(500).send('error');
+      res.json({ msg: 'class removed'});
+    });
   });
-}
+};

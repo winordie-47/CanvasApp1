@@ -18,14 +18,14 @@ User.collection.remove(function(err) {
 
 describe('the teacher test', function() {
   var jwtToken;
-  //var id;
 
   //creates a user
   before(function(done) {
     chai.request(localhost)
     .post('/api/users')
-    .send({username:'test@example.com', password:'foobar123'})
+    .send('test@example.com', 'Foobar123')
     .end(function(err, res) {
+      if (err) res.status(500).send(err);
       jwtToken = res.body.jwt;
       console.log(jwtToken);
       done();
