@@ -1,12 +1,13 @@
 'use strict';
 
+process.env.MONGO_URL = 'mongodb://localhost/users_test';
 var chai = require('chai');
 var chaihttp = require('chai-http');
-var User = require('./models/user_model.js');
+var User = require('../models/user_model.js');
 
 chai.use(chaihttp);
 
-require('./server.js');
+require('../server.js');
 
 var expect = chai.expect;
 var localhost = 'http://localhost:3000';
@@ -26,6 +27,7 @@ describe('the teacher test', function() {
     .send({username:'test@example.com', password:'foobar123'})
     .end(function(err, res) {
       jwtToken = res.body.jwt;
+      console.log(jwtToken);
       done();
     });
   });
@@ -34,10 +36,11 @@ describe('the teacher test', function() {
     chai.request(localhost)
     .get('/api/users')
     .set({jwt: jwtToken})
-    .send({teacher: {confirmed: true}})
+    //.send({teacher: {confirmed: true}})
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res.body.msg).to.equal('confirmed user is teacher');
+      console.log(res.body);
+      expect(res.body).to.equal('confirmed user is teacher');
       done();
     });
   });
