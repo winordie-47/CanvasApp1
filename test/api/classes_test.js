@@ -20,7 +20,7 @@ describe('the classes test', function() {
   before(function(done) {
     chai.request(localhost)
     .post('/api/users')
-    .send({username:'test@example.com', password:'foobar123'})
+    .send({username:'test@example.com', password:'Foobar123'})
     .end(function(err, res) {
       jwtToken = res.body.jwt;
       done();
