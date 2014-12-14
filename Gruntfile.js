@@ -27,7 +27,12 @@ module.exports = function(grunt) {
     },
 
     simplemocha: {
-      src: ['test/api/**/*.js']
+      options: {
+        timeout: 3000,
+        ignoreLeaks: true,
+        reporter: 'tap'
+      },
+      src: ['test/api/user_test.js', 'test/api/teacher_test.js', 'test/api/classes_test.js']
     },
 
     clean: {
@@ -76,5 +81,5 @@ module.exports = function(grunt) {
   grunt.registerTask('test', ['jshint', 'jscs', 'simplemocha']);
   grunt.registerTask('test:client', ['test', 'browserify:test', 'karma:unit']);
   grunt.registerTask('build', ['jshint', 'clean', 'copy:dev', 'browserify:dev']);
-  grunt.registerTask('default', ['build', 'test', 'test:client']);
+  grunt.registerTask('default', ['test']);
 };

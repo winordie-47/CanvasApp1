@@ -8,7 +8,7 @@ var classesSchema = mongoose.Schema({
   schedule: String,
   description: String,
   prereq: [],
-  pass: false
+  pass: {confirmed: false}
 });
 
 module.exports = mongoose.model('Classes', classesSchema);
