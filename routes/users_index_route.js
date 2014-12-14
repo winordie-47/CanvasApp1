@@ -14,7 +14,7 @@ module.exports = function(app, jwtauth) {
 
   //get one person by jwt
   app.get('/api/user', jwtauth, function(req, res) {
-    User.findOne({email: req.body.email}, function(err, user) {
+    User.findOne({_id: req.user._id}, function(err, user) {
       if (err) return res.status(500).send('error');
       console.log(user);
       res.json(user);
@@ -23,7 +23,7 @@ module.exports = function(app, jwtauth) {
 
   //add and change information
   app.put('/api/userinfo', jwtauth, function(req, res) {
-    User.findOne({email: req.body.email}, function(err, user) {
+    User.findOne({_id: req.user._id}, function(err, user) {
       if (err) return res.status(500).send('error');
       console.log(user);
       user.userinfo = {name: req.body.userinfo.name, phone: req.body.userinfo.phone};
@@ -37,7 +37,7 @@ module.exports = function(app, jwtauth) {
 
   //delete information
   app.delete('/api/user', jwtauth, function(req, res) {
-    User.remove({_id: req.body.user_id}, function(err) {
+    User.remove({_id: req.user._id}, function(err) {
       if (err) return res.status(500).send('error');
       res.json({msg: 'user removed'});
     });

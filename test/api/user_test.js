@@ -74,5 +74,8 @@ describe('test the api', function() {
       done();
     });
   });
+});
 
+User.collection.remove(function(err) {
+  if (err) throw(err);
 });

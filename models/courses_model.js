@@ -2,7 +2,7 @@
 
 var mongoose = require('mongoose');
 
-var classesSchema = mongoose.Schema({
+var coursesSchema = mongoose.Schema({
   name: String,
   summary: String,
   schedule: String,
@@ -11,4 +11,4 @@ var classesSchema = mongoose.Schema({
   pass: {confirmed: false}
 });
 
-module.exports = mongoose.model('Classes', classesSchema);
+module.exports = mongoose.model('courses', coursesSchema);

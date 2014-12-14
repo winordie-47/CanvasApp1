@@ -1,9 +1,9 @@
 'use strict';
 
-process.env.MONGO_URL = 'mongodb://localhost/classes_test';
+process.env.MONGO_URL = 'mongodb://localhost/courses_test';
 var chai = require('chai');
 var chaihttp = require('chai-http');
-//var Classes = require('./models/classes_model');
+var Courses = require('../../models/courses_model');
 chai.use(chaihttp);
 
 require('../../server.js');
@@ -11,7 +11,11 @@ require('../../server.js');
 var expect = chai.expect;
 var localhost = 'http://localhost:3000';
 
-describe('the classes test', function() {
+Courses.collection.remove(function(err) {
+  if (err) throw(err);
+});
+
+describe('the courses test', function() {
   var jwtToken;
   var prereqArr = [];
   var id;
@@ -20,9 +24,12 @@ describe('the classes test', function() {
   before(function(done) {
     chai.request(localhost)
     .post('/api/users')
-    .send({username:'test@example.com', password:'Foobar123'})
+    .set({email:'test@example.com', password:'Foobar123'})
     .end(function(err, res) {
+      if (err) res.status(500).send('error');
       jwtToken = res.body.jwt;
+      console.log('courses test begins');
+      console.log(jwtToken);
       done();
     });
   });
@@ -30,20 +37,21 @@ describe('the classes test', function() {
   //makes user a teacher
   before(function(done) {
     chai.request(localhost)
-    .auth({username: 'admin', password: 'password'})
-    .send({basic:{teacher:true}})
+    .post('/api/confirmteacher')
+    .set({jwt: jwtToken})
     .end(function(err, res) {
+      if (err) res.status(500).send('error');
       console.log(res.body);
       done();
     });
   });
 
-  it('should be able to create a class', function(done) {
+  it('should be able to create a cours', function(done) {
     chai.request(localhost)
-      .post('/api/classes')
+      .post('/api/courses')
       .set({jwt: jwtToken})
       .send({
-        name: 'classname',
+        name: 'coursname',
         summary: 'stuff',
         schedule: 'today',
         description: 'stuff',
@@ -60,21 +68,21 @@ describe('the classes test', function() {
       });
   });
 
-  it('should be able to edit class info', function(done) {
+  it('should be able to edit cours info', function(done) {
     chai.request(localhost)
-    .put('api/classes')
+    .put('api/courses')
     .set({jwt: jwtToken})
-    .send({description:'this is a class'})
+    .send({description:'this is a cours'})
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res.body.msg).to.equal('class info updated');
+      expect(res.body.msg).to.equal('cours info updated');
       done();
     });
   });
 
-  it('should be able to get a class', function(done) {
+  it('should be able to get a cours', function(done) {
     chai.request(localhost)
-    .get('api/classes')
+    .get('api/courses')
     .set({jwt: jwtToken})
     .end(function(err, res) {
       expect(err).to.eql(null);
@@ -83,13 +91,13 @@ describe('the classes test', function() {
     });
   });
 
-  it('should be able to delete a class', function(done) {
+  it('should be able to delete a cours', function(done) {
     chai.request(localhost)
-    .delete('api/classes')
+    .delete('api/courses')
     .set({jwt: jwtToken})
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res.body.msg).to.equal('class removed');
+      expect(res.body.msg).to.equal('cours removed');
       done();
     });
   });
