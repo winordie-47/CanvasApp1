@@ -6,9 +6,9 @@ module.exports = function(app, jwtauth) {
   //creates a course
   app.post('/api/courses', jwtauth, function(req, res) {
     var courses = new Courses();
-    User.findOne({_id: req.user._id}, function(err, res){
+    Courses.findOne({_id: req.user._id}, function(err, data) {
       if (err) return res.status(500).send('error');
-        courses = {
+      courses = {
         name: req.body.name,
         description: req.body.description,
         schedule: req.body.schedule
@@ -20,13 +20,14 @@ module.exports = function(app, jwtauth) {
         }
         return newstr;
       };
+      console.log(data);
       console.log(courses);
       courses.save(function(err, data) {
         if (err) return res.status(500).send('error');
         console.log(data);
         res.json({msg: 'course created'});
       });
-    })
+    });
   });
 
   //gets all of the courses
@@ -40,9 +41,7 @@ module.exports = function(app, jwtauth) {
 
   //gets just one course
   app.get('/api/course', jwtauth, function(req, res) {
-    Courses.findOne({
-      _id: req.courses.courses_id
-    }, function(err, data) {
+    Courses.findOne({_id: req.courses.courses_id}, function(err, data) {
       console.log('coursing it up');
       if (err) return res.status(500).send('error');
       res.json(data);
@@ -51,9 +50,7 @@ module.exports = function(app, jwtauth) {
 
   //changes class info
   app.put('/api/courses', jwtauth, function(req, res) {
-    Courses.findOne({
-      _id: req.courses._id
-    }, function(err, courseinfo) {
+    Courses.findOne({_id: req.courses._id}, function(err, courseinfo) {
       if (err) return res.status(500).send('error');
       courseinfo = {
         name: req.body.name,
@@ -77,9 +74,7 @@ module.exports = function(app, jwtauth) {
 
   //deletes a course
   app.delete('/api/courses', jwtauth, function(req, res) {
-    Courses.remove({
-      _id: req.body.courses_id
-    }, function(err) {
+    Courses.remove({_id: req.body.courses_id}, function(err) {
       if (err) return res.status(500).send('error');
       res.json({ msg: 'course removed'});
     });

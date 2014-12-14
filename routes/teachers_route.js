@@ -26,7 +26,7 @@ module.exports = function(app, jwtauth) {
       console.log(user.teacher);
       user.save(function(err) {
         if (err) return res.status(500).send('error');
-        res.json({msg: 'teacher has been removed from this plane of existance'});
+        res.json({msg: 'teacher has been removed from this plane of existence'});
       });
     });
   });

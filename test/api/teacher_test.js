@@ -26,7 +26,7 @@ describe('the teacher test', function() {
     .end(function(err, res) {
       if (err) res.status(500).send(err);
       jwtToken = res.body.jwt;
-      console.log('the teacher test user');
+      //console.log('the teacher test user');
       console.log(jwtToken);
       done();
     });
@@ -50,13 +50,9 @@ describe('the teacher test', function() {
     .set({jwt: jwtToken})
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res.body.msg).to.equal('teacher has been removed from this plane of existance');
+      expect(res.body.msg).to.equal('teacher has been removed from this plane of existence');
       done();
     });
   });
 
-});
-
-User.collection.remove(function(err) {
-  if (err) throw(err);
 });

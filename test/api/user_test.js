@@ -74,8 +74,15 @@ describe('test the api', function() {
       done();
     });
   });
-});
 
-User.collection.remove(function(err) {
-  if (err) throw(err);
+  it('should delete a user', function(done) {
+    chai.request(localhost)
+    .delete('/api/user')
+    .set({jwt: jwtToken})
+    .end(function(err, res) {
+      expect(err).to.eql(null);
+      expect(res.body.msg).to.equal('user removed');
+      done();
+    });
+  });
 });

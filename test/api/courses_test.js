@@ -46,12 +46,12 @@ describe('the courses test', function() {
     });
   });
 
-  it('should be able to create a cours', function(done) {
+  it('should be able to create a course', function(done) {
     chai.request(localhost)
       .post('/api/courses')
       .set({jwt: jwtToken})
       .send({
-        name: 'coursname',
+        name: 'coursename',
         summary: 'stuff',
         schedule: 'today',
         description: 'stuff',
@@ -68,21 +68,21 @@ describe('the courses test', function() {
       });
   });
 
-  it('should be able to edit cours info', function(done) {
+  it('should be able to edit course info', function(done) {
     chai.request(localhost)
-    .put('api/courses')
+    .put('/api/courses')
     .set({jwt: jwtToken})
-    .send({description:'this is a cours'})
+    .send({description:'this is a course'})
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res.body.msg).to.equal('cours info updated');
+      expect(res.body.msg).to.equal('course info updated');
       done();
     });
   });
 
-  it('should be able to get a cours', function(done) {
+  it('should be able to get a course', function(done) {
     chai.request(localhost)
-    .get('api/courses')
+    .get('/api/courses')
     .set({jwt: jwtToken})
     .end(function(err, res) {
       expect(err).to.eql(null);
@@ -91,13 +91,13 @@ describe('the courses test', function() {
     });
   });
 
-  it('should be able to delete a cours', function(done) {
+  it('should be able to delete a course', function(done) {
     chai.request(localhost)
-    .delete('api/courses')
+    .delete('/api/courses')
     .set({jwt: jwtToken})
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res.body.msg).to.equal('cours removed');
+      expect(res.body.msg).to.equal('course removed');
       done();
     });
   });
