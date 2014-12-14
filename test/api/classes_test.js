@@ -6,7 +6,7 @@ var chaihttp = require('chai-http');
 //var Classes = require('./models/classes_model');
 chai.use(chaihttp);
 
-require('./server.js');
+require('../../server.js');
 
 var expect = chai.expect;
 var localhost = 'http://localhost:3000';
