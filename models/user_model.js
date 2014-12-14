@@ -10,17 +10,17 @@ console.log(expires);
 
 var userSchema = mongoose.Schema({
   basic: {
-    username: String,
-    password: String,
-    teacher: false,
-    admin: false,
+    email: String,
+    password: String
+  },
+    teacher: {confirmed: false},
+    admin: {confirmed: false},
     userclass: [],
     usermessages: [],
     userinfo: {
       name: String,
       phone: String
     }
-  }
 });
 
 userSchema.methods.generateHash = function(password) {

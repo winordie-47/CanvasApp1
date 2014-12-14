@@ -22,6 +22,7 @@ canvasRouter.use(jwtauth);
 require('./routes/index.js')(app);
 require('./routes/users_routes.js')(app, passport);
 require('./routes/users_index_route.js')(app, jwtauth);
+require('./routes/teachers_route.js')(app, jwtauth);
 
 app.set('port', process.env.PORT || 3000);
 app.listen(app.get('port'), function() {

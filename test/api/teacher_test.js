@@ -34,10 +34,10 @@ describe('the teacher test', function() {
     chai.request(localhost)
     .get('/api/users')
     .set({jwt: jwtToken})
-    .send({basic:{teacher:true}})
+    .send({teacher: {confirmed: true}})
     .end(function(err, res) {
       expect(err).to.eql(null);
-      expect(res.body.msg).to.equal('added teacher');
+      expect(res.body.msg).to.equal('confirmed user is teacher');
       done();
     });
   });
@@ -46,7 +46,7 @@ describe('the teacher test', function() {
     chai.request(localhost)
     .get('/api/users')
     .set({jwt: jwtToken})
-    .send({basic:{teacher:true}})
+    .send({teacher: {confirmed: false}})
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(res.body.msg).to.equal('removed teacher');
