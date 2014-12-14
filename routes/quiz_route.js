@@ -1,15 +1,15 @@
 'use strict';
 
-var Quiz = require('../models.quiz_model');
+var Quiz = require('../models/quiz_model');
 
 module.exports = function(app, jwtauth) {
   app.post('/api/quiz', jwtauth, function(req, res) {
     var question = new Quiz();
     question.question = req.body.question;
-    question.type.javascript = req.body.answerOne;
-    question.type.python = req.body.answerTwo;
-    question.type.ruby = req.body.answerThree;
-    question.type.objective = req.body.answerFour;
+    question.answers.javascript = req.body.answerOne;
+    question.answers.python = req.body.answerTwo;
+    question.answers.ruby = req.body.answerThree;
+    question.answers.objective = req.body.answerFour;
     question.save(function(err, data) {
       if (err) return res.status(500).send('There was an error');
       res.json(data);

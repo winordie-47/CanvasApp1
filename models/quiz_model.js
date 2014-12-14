@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 
 var quizSchema = mongoose.Schema({
   question: String,
-  type: {
+  answers: {
     javascript: String,
     python: String,
     ruby: String,
