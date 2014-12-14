@@ -1,7 +1,8 @@
 'use strict';
 
 module.exports = function(app, jwtauth){
-
+  var Classes = require('./models/classes_model.js');
+  
   //creates a class
   app.post('/api/classes', jwtauth, function(res, res) {
 
