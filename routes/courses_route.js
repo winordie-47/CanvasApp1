@@ -3,23 +3,27 @@
 module.exports = function(app, jwtauth) {
   var Course = require('../models/courses_model');
   var User = require('../models/user_model');
+  var moment = require('moment');
 
   //creates a course
   app.post('/api/courses', jwtauth, function(req, res) {
     User.findOne({_id: req.user._id}, function(err, user) {
       if (err) return res.status(500).send('error');
+      if (!user) return res.status(500).send('error');
       if (user.teacher.confirmed === true) {
         var course = new Course({
           name: req.body.name,
           summary: req.body.summary,
           schedule: req.body.schedule,
           description: req.body.description,
+          code: moment().unix(),
           prereq: [],
           pass: {confirmed: false}
         });
         console.log(user.teacher.confirmed);
         course.save(function(err, data) {
           if (err) return res.status(500).send('error');
+          if (!data) return res.send({msg: 'information not saved'});
           console.log(data);
           res.json(data);
         });
@@ -33,10 +37,12 @@ module.exports = function(app, jwtauth) {
   app.get('/api/courses', jwtauth, function(req, res) {
     User.findOne({_id: req.user._id}, function(err, user) {
       if (err) return res.status(500).send('error');
+      if (!user) return res.status(500).send('error');
       if (user.teacher.confirmed === true) {
         Course.find(function(err, data) {
           console.log('getting all of the courses');
           if (err) return res.status(500).send('error');
+          if (!data) return res.send({msg: 'did not get all courses'});
           res.json(data);
         });
       } else {
@@ -46,13 +52,15 @@ module.exports = function(app, jwtauth) {
   });
 
   //gets just one course
-  app.get('/api/course', jwtauth, function(req, res) {
+  app.post('/api/course', jwtauth, function(req, res) {
     User.findOne({_id: req.user._id}, function(err, user) {
       if (err) res.status(500).send('error');
+      if (!user) return res.status(500).send('error');
       if (user.teacher.confirmed === true) {
-        Course.findOne({_id: req.course._id}, function(err, data) {
+        Course.findOne({code: req.body.code}, function(err, data) {
           console.log('coursing it up');
-          if (err) return res.status(500).send('error');
+          if (err) return res.status(500).send('error.');
+          if (!data) return res.send({msg:'course not found'});
           res.json(data);
         });
       } else {
@@ -61,23 +69,23 @@ module.exports = function(app, jwtauth) {
     });
   });
 
-  //changes class info
+  //changes class summary and description
   app.put('/api/courses', jwtauth, function(req, res) {
     User.findOne({_id: req.user._id}, function(err, user) {
       if (err) res.status(500).send('error');
+      if (!user) return res.status(500).send('error');
       if (user.teacher.confirmed === true) {
-        Course.findOne({_id: req.course._id}, function(err, course) {
+        Course.findOne({code: req.body.code}, function(err, course) {
           if (err) return res.status(500).send('error');
-          course = {
-            name: req.body.name,
-            summary: req.body.summary,
-            schedule: req.body.schedule,
-            description: req.body.description,
-            prereq: [],
-            pass: {confirmed: false}
-          };
+          if (!course) return res.send({msg: 'course not found'});
+          console.log(course);
+          course.name = req.body.name;
+          course.schedule = req.body.schedule;
+          course.summary = req.body.summary;
+          course.description = req.body.description;
           course.save(function(err, data) {
           if (err) return res.status(500).send('error');
+          if (!data) return res.status({msg:'error.  not updated'})
           console.log(data);
           res.json({msg: 'course updated'});
         });
@@ -90,11 +98,13 @@ module.exports = function(app, jwtauth) {
 
   //deletes a course
   app.delete('/api/course', jwtauth, function(req, res) {
-    User.findOne({_id: req.user._id}, function(err, user) {
+    User.findOne({code: req.body.code}, function(err, user) {
       if (err) res.status(500).send('error');
+      if (!user) return res.status(500).send('error');
       if (user.teacher.confirmed === true) {
-        Course.remove({_id: req.course._id}, function(err) {
+        Course.remove({_id: req.course._id}, function(err, data) {
           if (err) return res.status(500).send('error');
+          if (!data) return res.status(500).send('error. not deleted');
           res.json({ msg: 'course removed'});
         });
       } else {
